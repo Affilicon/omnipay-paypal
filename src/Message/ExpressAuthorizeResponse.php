@@ -12,12 +12,18 @@ class ExpressAuthorizeResponse extends Response implements RedirectResponseInter
     protected $liveCheckoutEndpoint = 'https://www.paypal.com/cgi-bin/webscr';
     protected $testCheckoutEndpoint = 'https://www.sandbox.paypal.com/cgi-bin/webscr';
 
-    public function isSuccessful()
+    /**
+     * @return bool
+     */
+    public function isSuccessful(): bool
     {
-        return $this->data['ACK'] ?? in_array($this->data['ACK'], ['Success', 'SuccessWithWarning']);
+        return isset($this->data['ACK']) && in_array($this->data['ACK'], ['Success', 'SuccessWithWarning']);
     }
 
-    public function isRedirect()
+    /**
+     * @return bool
+     */
+    public function isRedirect(): bool
     {
         return $this->isSuccessful();
     }
